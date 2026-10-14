@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>FinanApp</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="app-header">
+  <div class="header-text">
+    <p class="greeting">Hola &#128075;</p>
+    <h1 class="app-title">Mis Finanzas</h1>
+  </div>
+</header>
+
+<!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+<main class="app-content">
+
+  <!-- ---------- SECCIÓN: INICIO ---------- -->
+  <section id="seccion-inicio" class="seccion activa">
+
+    <div class="card card-saldo">
+      <p class="card-label">SALDO DISPONIBLE</p>
+      <p class="card-saldo-valor" id="saldo-total">$0</p>
+    </div>
+
+    <div class="resumen-grid">
+      <div class="card card-resumen card-ingresos">
+        <p class="card-label">INGRESOS</p>
+        <p class="card-resumen-valor" id="total-ingresos">$0</p>
+      </div>
+      <div class="card card-resumen card-gastos">
+        <p class="card-label">GASTOS</p>
+        <p class="card-resumen-valor" id="total-gastos">$0</p>
+      </div>
+    </div>
+
+    <div class="acciones-rapidas">
+      <button class="btn btn-ingreso" id="btn-agregar-ingreso-inicio" onclick="abrirFormulario('ingreso')">
+        &#128176; Agregar ingreso
+      </button>
+      <button class="btn btn-gasto" id="btn-agregar-gasto-inicio" onclick="abrirFormulario('gasto')">
+        &#128184; Agregar gasto
+      </button>
+    </div>
+
+    <div class="seccion-header-row">
+      <h2 class="seccion-subtitulo">Últimos movimientos</h2>
+      <button class="btn-link" onclick="mostrarSeccion('movimientos')">Ver todos</button>
+    </div>
+
+    <div id="lista-movimientos-recientes" class="lista-movimientos"></div>
+
+  </section>
+
+  <!-- ---------- SECCIÓN: MOVIMIENTOS ---------- -->
+  <section id="seccion-movimientos" class="seccion">
+    <h2 class="seccion-titulo">Movimientos</h2>
+    <p class="seccion-descripcion">Administra tus ingresos y gastos</p>
+
+    <div id="lista-movimientos-todos" class="lista-movimientos"></div>
+  </section>
+
+  <!-- ---------- SECCIÓN: ESTADÍSTICAS ---------- -->
+  <section id="seccion-estadisticas" class="seccion">
+    <h2 class="seccion-titulo">Estadísticas</h2>
+
+    <div class="resumen-grid">
+      <div class="card card-resumen card-ingresos">
+        <p class="card-label">INGRESOS</p>
+        <p class="card-resumen-valor" id="stat-ingresos">$0</p>
+      </div>
+      <div class="card card-resumen card-gastos">
+        <p class="card-label">GASTOS</p>
+        <p class="card-resumen-valor" id="stat-gastos">$0</p>
+      </div>
+    </div>
+
+    <div class="resumen-grid">
+      <div class="card card-resumen">
+        <p class="card-label">SALDO</p>
+        <p class="card-resumen-valor" id="stat-saldo">$0</p>
+      </div>
+      <div class="card card-resumen">
+        <p class="card-label">MOVIMIENTOS</p>
+        <p class="card-resumen-valor" id="stat-cantidad">0</p>
+      </div>
+    </div>
+
+    <h3 class="seccion-subtitulo">Resumen por categoría</h3>
+    <div id="lista-categorias" class="lista-categorias"></div>
+  </section>
+
+  <!-- ---------- SECCIÓN: CONFIGURACIÓN ---------- -->
+  <section id="seccion-configuracion" class="seccion">
+    <h2 class="seccion-titulo">Configuración</h2>
+
+    <div class="card card-config">
+      <p class="card-label">TEMA</p>
+
+      <label class="opcion-radio">
+        <input type="radio" name="tema" value="claro" id="tema-claro" onchange="cambiarTema('claro')">
+        <span>Claro</span>
+      </label>
+      <label class="opcion-radio">
+        <input type="radio" name="tema" value="oscuro" id="tema-oscuro" onchange="cambiarTema('oscuro')">
+        <span>Oscuro</span>
+      </label>
+      <label class="opcion-radio">
+        <input type="radio" name="tema" value="sistema" id="tema-sistema" onchange="cambiarTema('sistema')">
+        <span>Sistema</span>
+      </label>
+    </div>
+
+    <div class="card card-config">
+      <button class="btn btn-peligro" id="btn-eliminar-movimientos" onclick="confirmarEliminarMovimientos()">
+        &#128465;&#65039; Eliminar todos los movimientos
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== NAVEGACIÓN INFERIOR ===================== -->
+<nav class="nav-inferior">
+  <button class="nav-item activo" id="nav-inicio" onclick="mostrarSeccion('inicio')">
+    <span class="nav-icono">&#127968;</span>
+    <span class="nav-label">Inicio</span>
+  </button>
+  <button class="nav-item" id="nav-movimientos" onclick="mostrarSeccion('movimientos')">
+    <span class="nav-icono">&#128176;</span>
+    <span class="nav-label">Movimientos</span>
+  </button>
+  <button class="nav-item" id="nav-estadisticas" onclick="mostrarSeccion('estadisticas')">
+    <span class="nav-icono">&#128202;</span>
+    <span class="nav-label">Estadísticas</span>
+  </button>
+  <button class="nav-item" id="nav-configuracion" onclick="mostrarSeccion('configuracion')">
+    <span class="nav-icono">&#9881;&#65039;</span>
+    <span class="nav-label">Configuración</span>
+  </button>
+</nav>
+
+<!-- ===================== BOTÓN FLOTANTE ===================== -->
+<button class="fab" id="btn-fab" onclick="toggleMenuFab()">+</button>
+
+<div class="fab-menu" id="fab-menu">
+  <button class="fab-menu-item" onclick="abrirFormulario('ingreso'); toggleMenuFab()">
+    &#128176; Agregar ingreso
+  </button>
+  <button class="fab-menu-item" onclick="abrirFormulario('gasto'); toggleMenuFab()">
+    &#128184; Agregar gasto
+  </button>
+</div>
+<div class="fab-overlay" id="fab-overlay" onclick="toggleMenuFab()"></div>
+
+<!-- ===================== MODAL: FORMULARIO DE MOVIMIENTO ===================== -->
+<div class="modal-overlay" id="modal-formulario">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 class="modal-titulo" id="modal-titulo">Agregar ingreso</h3>
+        <p class="modal-subtitulo" id="modal-subtitulo">Registra un nuevo ingreso</p>
+      </div>
+      <button class="modal-cerrar" onclick="cerrarFormulario()">&times;</button>
+    </div>
+
+    <form id="form-movimiento" onsubmit="guardarMovimiento(event)">
+      <input type="hidden" id="input-tipo" value="ingreso">
+
+      <label class="campo-label" for="input-monto">Monto</label>
+      <input class="campo-input" type="number" id="input-monto" placeholder="0" min="1" step="1">
+      <p class="campo-error" id="error-monto"></p>
+
+      <label class="campo-label" for="input-descripcion">Descripción</label>
+      <input class="campo-input" type="text" id="input-descripcion" placeholder="Ej. Salario, Transporte...">
+      <p class="campo-error" id="error-descripcion"></p>
+
+      <label class="campo-label" for="input-categoria">Categoría</label>
+      <select class="campo-input" id="input-categoria">
+        <option value="">Selecciona una categoría</option>
+        <option value="Alimentación">Alimentación</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Vivienda">Vivienda</option>
+        <option value="Educación">Educación</option>
+        <option value="Tecnología">Tecnología</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Compras">Compras</option>
+        <option value="Salud">Salud</option>
+        <option value="Otros">Otros</option>
+      </select>
+      <p class="campo-error" id="error-categoria"></p>
+
+      <label class="campo-label" for="input-fecha">Fecha</label>
+      <input class="campo-input" type="date" id="input-fecha">
+      <p class="campo-error" id="error-fecha"></p>
+
+      <label class="campo-label" for="input-cuenta">Cuenta</label>
+      <select class="campo-input" id="input-cuenta">
+        <option value="">Selecciona una cuenta</option>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Cuenta bancaria">Cuenta bancaria</option>
+        <option value="Tarjeta">Tarjeta</option>
+      </select>
+      <p class="campo-error" id="error-cuenta"></p>
+
+      <div class="modal-botones">
+        <button type="button" class="btn btn-secundario" onclick="cerrarFormulario()">Cancelar</button>
+        <button type="submit" class="btn btn-primario" id="btn-guardar-movimiento">Guardar ingreso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MODAL: CONFIRMAR ELIMINAR ===================== -->
+<div class="modal-overlay" id="modal-confirmar">
+  <div class="modal modal-pequeno">
+    <h3 class="modal-titulo">¿Estás seguro?</h3>
+    <p class="modal-texto">¿Estás seguro de que quieres eliminar todos tus movimientos?</p>
+    <div class="modal-botones">
+      <button class="btn btn-secundario" onclick="cerrarModalConfirmar()">Cancelar</button>
+      <button class="btn btn-peligro" onclick="eliminarMovimientos()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TOAST DE CONFIRMACIÓN ===================== -->
+<div class="toast" id="toast"></div>
+
+<script src="app2.js"></script>
+</body>
+</html>
